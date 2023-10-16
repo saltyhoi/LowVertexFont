@@ -1,0 +1,12 @@
+#The Mathematica code (made in version 12.1) to generate most of the polygons
+
+Identity @@@ (With[{coords = First@#}, 
+         With[{paths = Cases[#, {Line@x_} :> First /@ (x /. MapIndexed[First@#2 -> # &, coords])]}, 
+          With[{nesting = FirstCase[#, ("BoundaryNesting" -> x_) :> x, none, \[Infinity]]}, 
+           Graphics@ Polygon[ If[Length@# == 1, First@#, First@# -> Rest@#]] & /@ 
+            Cases[Fold[ If[(*1*)EvenQ@First@nesting[[#2]], #, 
+                ReplacePart[#, {#2 -> {}, Last@nesting[[#2]] -> 
+                   Append[#[[Last@nesting[[#2]]]], paths[[#2]]]}]] &, 
+              List /@ paths, Range@Length@nesting], Except@{}]
+          ]]] &@ (*2*)First[Uncompress[Compress@#, Hold] /.  BoundaryMeshRegion -> List] &@
+     ImageMesh@ Graphics[{White, Style[Text@#, 9, FontFamily -> "Source Code Pro"]}, Background -> Black] & /@ Capitalize@Alphabet[])
