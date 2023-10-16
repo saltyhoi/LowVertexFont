@@ -1,4 +1,4 @@
-#The Mathematica code (made in version 12.1) to generate most of the polygons
+(* The Mathematica code (made in version 12.1) to generate most of the polygons)
 
 Identity @@@ (With[{coords = First@#}, 
          With[{paths = Cases[#, {Line@x_} :> First /@ (x /. MapIndexed[First@#2 -> # &, coords])]}, 
